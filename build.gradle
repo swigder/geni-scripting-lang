@@ -1,0 +1,66 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.intellij' version '0.6.5'
+    id 'org.jetbrains.grammarkit' version '2020.3.2'
+}
+
+apply plugin: 'org.jetbrains.grammarkit'
+import org.jetbrains.grammarkit.tasks.*
+
+group 'com.swigder'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+// See https://github.com/JetBrains/gradle-intellij-plugin/
+intellij {
+    version '2020.3.2'
+}
+patchPluginXml {
+    changeNotes """
+      Add change notes here.<br>
+      <em>most HTML tags may be used</em>"""
+}
+test {
+    useJUnitPlatform()
+}
+
+sourceSets.main.java.srcDirs 'src/main/gen'
+
+grammarKit {
+    // version of IntelliJ patched JFlex (see bintray link below), Default is 1.7.0-1
+    jflexRelease = '1.7.0-1'
+
+    // tag or short commit hash of Grammar-Kit to use (see link below). Default is 2017.1.6
+    grammarKitRelease = '6452fde524'
+}
+
+task generateGeniScriptLexer(type: GenerateLexer) {
+    source = "src/main/resources/language/GeniScript.flex"
+
+    targetDir = "$projectDir/src/main/gen/com/swigder/geni/language/"
+    targetClass = "GeniScriptLexer"
+
+    purgeOldFiles = true
+}
+
+task generateGeniScriptParser(type: GenerateParser) {
+    source = "src/main/resources/language/GeniScript.bnf"
+
+    targetRoot = 'src/main/gen'
+
+    pathToParser = '/com/swigder/geni/language/parser/GeniScriptParser.java'
+    pathToPsiRoot = '/com/swigder/geni/language/psi'
+
+    purgeOldFiles = true
+}
+
+//compileJava.dependsOn(generateGeniScriptLexer, generateGeniScriptParser)
+

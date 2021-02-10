@@ -1,0 +1,29 @@
+{
+  parserClass="com.swigder.geni.language.psi.GeniScriptParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="GeniScript"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.swigder.geni.language.psi"
+  psiImplPackage="com.swigder.geni.language.psi.impl"
+
+  elementTypeHolderClass="com.swigder.geni.language.psi.GeniScriptTypes"
+  elementTypeClass="com.swigder.geni.language.psi.GeniScriptElementType"
+  tokenTypeClass="com.swigder.geni.language.psi.GeniScriptTokenType"
+}
+
+geniFile ::= item_*
+
+private item_ ::= (root_subroutine|command_with_properties|COMMENT|END_LINE)
+
+root_subroutine ::= PUSH_ROOT command_with_properties* POP_ROOT
+
+command_with_properties ::= command property*
+
+command ::= (tree_command|update_command)
+
+tree_command ::= (END_NEW|POP_ROOT|POP_ROOTS|PUSH_ROOT|SET_ROOT)
+update_command ::= (UPDATE_PROFILE|ADD_CHILDREN|ADD_PARTNER|ADD_PARENTS|ADD_TREE)
+
+property ::= KEY SEPARATOR VALUE

@@ -1,0 +1,28 @@
+<idea-plugin>
+    <id>com.swigder.geni-scripting-lang</id>
+    <name>GeniScript Language</name>
+    <vendor email="swigder.com" url="http://www.swigder.com">Swigder.com</vendor>
+
+    <description>GeniScript language support for calling Geni APIs.</description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType name="GeniScript File" implementationClass="com.swigder.geni.language.GeniScriptFileType"
+                  fieldName="INSTANCE" language="GeniScript" extensions="geni"/>
+        <lang.parserDefinition language="GeniScript"
+                               implementationClass="com.swigder.geni.language.GeniScriptParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="GeniScript"
+                                       implementationClass="com.swigder.geni.language.GeniScriptSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="com.swigder.geni.language.GeniColorSettingsPage"/>
+        <lang.foldingBuilder language="GeniScript"
+                             implementationClass="com.swigder.geni.language.GeniScriptFoldingBuilder"/>
+        <lang.commenter language="GeniScript" implementationClass="com.swigder.geni.language.GeniScriptCommenter"/>
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+</idea-plugin>
